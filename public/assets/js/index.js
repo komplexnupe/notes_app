@@ -8,7 +8,7 @@ const $noteList = $(".list-container .list-group");
 let activeNote = {};
 
 // A function for getting all notes from the db
-const getNotes = function () {
+const getNotes = () => {
   return $.ajax({
     url: "/api/notes",
     method: "GET",
@@ -16,7 +16,7 @@ const getNotes = function () {
 };
 
 // A function for saving a note to the db
-const saveNote = function (note) {
+const saveNote = (note) => {
   return $.ajax({
     url: "/api/notes",
     data: note,
@@ -25,7 +25,7 @@ const saveNote = function (note) {
 };
 
 // A function for deleting a note from the db
-const deleteNote = function (id) {
+const deleteNote = (id) => {
   return $.ajax({
     url: "api/notes/" + id,
     method: "DELETE",
@@ -33,7 +33,7 @@ const deleteNote = function (id) {
 };
 
 // If there is an activeNote, display it, otherwise render empty inputs
-const renderActiveNote = function () {
+const renderActiveNote = () => {
   $saveNoteBtn.hide();
 
   if (activeNote.id) {
@@ -56,7 +56,7 @@ const handleNoteSave = function () {
     text: $noteText.val(),
   };
 
-  saveNote(newNote).then(function () {
+  saveNote(newNote).then(() => {
     getAndRenderNotes();
     renderActiveNote();
   });
@@ -73,7 +73,7 @@ const handleNoteDelete = function (event) {
     activeNote = {};
   }
 
-  deleteNote(note.id).then(function () {
+  deleteNote(note.id).then(() => {
     getAndRenderNotes();
     renderActiveNote();
   });
@@ -102,14 +102,14 @@ const handleRenderSaveBtn = function () {
 };
 
 // Render's the list of note titles
-const renderNoteList = function(notes) {
+const renderNoteList = (notes) => {
   $noteList.empty();
 
   const noteListItems = [];
 
   // Returns jquery object for li with given text and delete button
   // unless withDeleteButton argument is provided as false
-  const create$li = function(text, withDeleteButton = true) {
+  const create$li = (text, withDeleteButton = true) => {
     const $li = $("<li class='list-group-item'>");
     const $span = $("<span>").text(text);
     $li.append($span);
@@ -136,7 +136,7 @@ const renderNoteList = function(notes) {
 };
 
 // Gets notes from the db and renders them to the sidebar
-const getAndRenderNotes = function() {
+const getAndRenderNotes = () => {
   return getNotes().then(renderNoteList);
 };
 
