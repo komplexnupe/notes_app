@@ -30,7 +30,8 @@ Leonard Love. Pull requests are welcome, but please open an issue first to discu
 ## <a name="test">Test</a>
 
 Please see a demo of the project below:
-![Demo](public/assets/images/Note_Taker.gif)
+
+![Demo](public/assets/images/noteTaker.gif)
 
 https://leonardlove-note-taker.herokuapp.com/
 
