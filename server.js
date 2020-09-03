@@ -14,28 +14,25 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-// Routes
+// HTML Routes
 // =============================================================
-
-// Basic route that sends the user first to the AJAX Page
-// 
 app.get("/notes", function (req, res) {
   res.sendFile(path.join(__dirname, "public/notes.html"));
 });
 
-// Read the db.json file and return all saved notes as JSON
 app.get("/api/notes", function (req, res) {
   res.json(db)
 });
 
-// Receive a new note to save on the request body, add it to the db.json file, and then return the new note to the client.
+// API Routes
+// =============================================================
 app.post("/api/notes", function (req, res) {
   let newNote = req.body;
-  if(db.length === 0){
-    console.log("hey")
-   newNote.id = 1;
-  } else{
-  newNote.id = db[db.length - 1].id + 1
+
+  if (db.length === 0) {
+    newNote.id = 1;
+  } else {
+    newNote.id = db[db.length - 1].id + 1
   }
 
   db.push(newNote)
@@ -58,9 +55,9 @@ app.delete("/api/notes/:id", function (req, res) {
   const notes = req.body;
   console.log(chosen);
 
+  // Deleting Note by ID
   for (let i = 0; i < db.length; i++) {
     if (chosen == db[i].id) {
-      console.log("hey");
       db.splice(i, 1);
     }
   }
