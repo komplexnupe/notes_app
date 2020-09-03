@@ -43,16 +43,32 @@ db.push(newNote)
     
       console.log("Success!");
     
+      res.json(newNote);
     });
-  res.json(newNote);
 }); 
 
 
 app.delete("/api/notes/:id", function (req, res) {
-  var chosen = req.params.id;
-
+  const chosen = req.params.id;
+  const notes = req.body;
   console.log(chosen);
+  
+  for(let i = 0; i < db.length; i++){
+    if(chosen == db[i].id){
+      console.log("hey");
+      db.splice(i,1);
+    }
+  }
+  console.log(db);
 
+  fs.writeFile('db/db.json', JSON.stringify(db), function(err){
+    if (err) {
+        return console.log(err);
+      }
+    
+      console.log("Success!");
+    res.sendStatus(200);
+    });
 
 
 });
