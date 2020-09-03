@@ -31,21 +31,26 @@ app.get("/api/notes", function (req, res) {
 // Receive a new note to save on the request body, add it to the db.json file, and then return the new note to the client.
 app.post("/api/notes", function (req, res) {
   let newNote = req.body;
+  if(db.length === 0){
+    console.log("hey")
+   newNote.id = 1;
+  } else{
   newNote.id = db[db.length - 1].id + 1
-db.push(newNote)
-  console.log(newNote);
-  // fs.writeFileSync('db/db.json', JSON.stringify(newNote));
+  }
 
-  fs.writeFile('db/db.json', JSON.stringify(db), function(err){
+  db.push(newNote)
+  console.log(newNote);
+
+  fs.writeFile('db/db.json', JSON.stringify(db), function (err) {
     if (err) {
-        return console.log(err);
-      }
-    
-      console.log("Success!");
-    
-      res.json(newNote);
-    });
-}); 
+      return console.log(err);
+    }
+
+    console.log("Success!");
+
+    res.json(newNote);
+  });
+});
 
 
 app.delete("/api/notes/:id", function (req, res) {
@@ -53,30 +58,30 @@ app.delete("/api/notes/:id", function (req, res) {
   const notes = req.body;
   console.log(chosen);
 
-  for(let i = 0; i < db.length; i++){
-    if(chosen == db[i].id){
+  for (let i = 0; i < db.length; i++) {
+    if (chosen == db[i].id) {
       console.log("hey");
-      db.splice(i,1);
+      db.splice(i, 1);
     }
   }
   console.log(db);
 
-  fs.writeFile('db/db.json', JSON.stringify(db), function(err){
+  fs.writeFile('db/db.json', JSON.stringify(db), function (err) {
     if (err) {
-        return console.log(err);
-      }
-    
-      console.log("Success!");
+      return console.log(err);
+    }
+
+    console.log("Success!");
     res.sendStatus(200);
-    });
+  });
 
 
 });
 
 app.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "public/index.html"));
-  });
-  
+  res.sendFile(path.join(__dirname, "public/index.html"));
+});
+
 // Starts the server to begin listening
 // =============================================================
 app.listen(PORT, function () {
