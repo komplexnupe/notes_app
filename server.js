@@ -7,7 +7,7 @@ const db = require("./db/db.json")
 // Sets up the Express App
 // =============================================================
 const app = express();
-const PORT = 2020;
+const PORT = process.env.PORT || 2020;
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
@@ -52,7 +52,7 @@ app.delete("/api/notes/:id", function (req, res) {
   const chosen = req.params.id;
   const notes = req.body;
   console.log(chosen);
-  
+
   for(let i = 0; i < db.length; i++){
     if(chosen == db[i].id){
       console.log("hey");
