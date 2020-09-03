@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
+const db = require("./db/db.json")
 // var index = require("public/assets/index.js")
 
 // Sets up the Express App
@@ -17,31 +18,25 @@ app.use(express.static("public"));
 // =============================================================
 
 // Basic route that sends the user first to the AJAX Page
-app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "public/index.html"));
-});
-
+// 
 app.get("/notes", function (req, res) {
   res.sendFile(path.join(__dirname, "public/notes.html"));
 });
 
 // Read the db.json file and return all saved notes as JSON
 app.get("/api/notes", function (req, res) {
-  fs.readFile('db/db.json', (err, data) => {
-    if (err) throw err;
-    let savedNote = JSON.parse(data);
-    return res.json(savedNote);
-  });
+  res.json(db)
 });
 
 // Receive a new note to save on the request body, add it to the db.json file, and then return the new note to the client.
 app.post("/api/notes", function (req, res) {
   let newNote = req.body;
-
+  newNote.id = db[db.length - 1].id + 1
+db.push(newNote)
   console.log(newNote);
   // fs.writeFileSync('db/db.json', JSON.stringify(newNote));
 
-  fs.appendFile('db/db.json', JSON.stringify(newNote) + "\n", function(err){
+  fs.writeFile('db/db.json', JSON.stringify(db), function(err){
     if (err) {
         return console.log(err);
       }
@@ -50,7 +45,7 @@ app.post("/api/notes", function (req, res) {
     
     });
   res.json(newNote);
-});
+}); 
 
 
 app.delete("/api/notes/:id", function (req, res) {
@@ -61,6 +56,11 @@ app.delete("/api/notes/:id", function (req, res) {
 
 
 });
+
+app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "public/index.html"));
+  });
+  
 // Starts the server to begin listening
 // =============================================================
 app.listen(PORT, function () {
