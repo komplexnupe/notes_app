@@ -31,7 +31,7 @@ Leonard Love. Pull requests are welcome, but please open an issue first to discu
 
 Please see a demo of the project below:
 
-![Demo](public/assets/images/noteTaker.gif)
+![Demo](/public/images/noteTaker.gif)
 
 https://leonardlove-note-taker.herokuapp.com/
 
